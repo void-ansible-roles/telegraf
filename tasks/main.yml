@@ -1,0 +1,49 @@
+---
+- name: Install packages
+  xbps:
+    pkg: telegraf
+    state: present
+
+- name: Create configuration directory
+  file:
+    path: /etc/{{ item }}
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - telegraf
+    - telegraf/telegraf.d
+
+- name: Install service configuration
+  copy:
+    src: conf
+    dest: /etc/sv/telegraf/conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install agent configuration
+  template:
+    src: telegraf.conf.j2
+    dest: /etc/telegraf/telegraf.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - telegraf
+
+- name: Install base host monitoring configuration
+  copy:
+    src: host.conf
+    dest: /etc/telegraf/telegraf.d/
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - telegraf
+
+- name: Enable Service
+  runit:
+    name: telegraf
+    enabled: true

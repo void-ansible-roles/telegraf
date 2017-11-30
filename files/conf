@@ -1,0 +1,2 @@
+TELEGRAF_CONF_LINE="--config=/etc/telegraf/telegraf.conf"
+TELEGRAF_CONFDIR_LINE="--config-directory=/etc/telegraf/telegraf.d/"

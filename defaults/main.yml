@@ -1,0 +1,6 @@
+---
+telegraf:
+  agent:
+  output:
+    influxdb:
+

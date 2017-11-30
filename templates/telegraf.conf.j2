@@ -1,0 +1,32 @@
+{% if telegraf.global_tags is defined %}
+[global_tags]
+{% for tag in telegraf.global_tags %}
+  {{ tag }}
+{% endfor %}
+{% endif %}
+
+[agent]
+  interval = "{{ telegraf.agent.interval | default('10s') }}"
+  round_interval = {{ telegraf.agent.round_interval | default('true') }}
+  metric_batch_size = {{ telegraf.agent.metric_batch_size | default(1000) }}
+  metric_buffer_limit = {{ telegraf.agent.metric_buffer_limit | default(10000) }}
+  collection_jitter = "{{ telegraf.agent.collection_jitter | default('0s') }}"
+  flush_interval = "{{ telegraf.agent.flush_interval | default('10s') }}"
+  flush_jitter = "{{ telegraf.agent.flush_jitter | default('0s') }}"
+  precision = "{{ telegraf.agent.precision | default() }}"
+  debug = false
+  quiet = true
+  logfile = ""
+  hostname = ""
+  omit_hostname = false
+
+[[outputs.influxdb]]
+  urls = ["{{ telegraf.output.influxdb.url | default('http://localhost:8086') }}"]
+  database = "{{ telegraf.output.influxdb.database | default('telegraf') }}"
+  retention_policy = "{{ telegraf.output.retention_policy | default() }}"
+  write_consistency = "{{ telegraf.output.write_consistency | default('any') }}"
+  timeout = "{{ telegraf.output.timeout | default('5s') }}"
+{% if telegraf.output.username is defined %}
+  username = "{{ telegraf.output.username }}"
+  password = "{{ telegraf.output.password }}"
+{% endif %}
