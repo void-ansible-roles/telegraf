@@ -1,0 +1,5 @@
+*filter
+{% for remote in telegraf.remotes %}
+-A OUTPUT -p tcp -d {{ remote.host }} --dport {{ remote.port | default(8086) }} -j ACCEPT
+{% endfor %}
+COMMIT

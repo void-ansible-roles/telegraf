@@ -15,6 +15,7 @@ Files Managed:
 
 Optional Variables:
   * telegraf:
+    * remotes: list of tsdb servers in host:port format
     * global_tags: list of tags to be applied from this host 'key=value' formatted list
     * agent:
       * interval: metric collection interval

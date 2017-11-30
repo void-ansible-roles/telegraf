@@ -43,6 +43,17 @@
   notify:
     - telegraf
 
+- name: Install firewall rules
+  template:
+    src: telegraf.rules
+    dest: /etc/iptables.d/telegraf.rules
+    owner: root
+    group: root
+    mode: 0640
+  notify:
+    - iptables
+  when: telegraf.remotes is defined
+
 - name: Enable Service
   runit:
     name: telegraf
